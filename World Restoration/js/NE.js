@@ -40,5 +40,5 @@ function buyKeyMultiplier() {
 	if(game.keys.lt(game.keyMultiplierCost)) return;
 	game.keys = game.keys.subtract(game.keyMultiplierCost);
 	game.keyMultiplier = game.keyMultiplier.multiply(1.05);
-	game.keyMultiplierCost = game.keyMultiplierCost.multiply(1.2);
+	game.keyMultiplierCost = game.keyMultiplierCost.multiply(1.08);
 }

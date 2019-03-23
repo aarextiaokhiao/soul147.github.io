@@ -1,5 +1,5 @@
 function gainedKeys() {
-	return game.forks.divide(1e3).pow(1/2).multiply(getKeyMultiplier());
+	return game.forks.divide(1e3).pow(2/3).multiply(getKeyMultiplier());
 }
 
 function getKeyMultiplier() {
@@ -14,7 +14,7 @@ function newEpisode() {
 	reset(1);
 }
 
-game.neUpgradeCosts = {0: "10", 1: "100", 2: "1000"}
+game.neUpgradeCosts = {0: "5", 1: "50", 2: "500"}
 for(i in game.neUpgradeCosts) game.neUpgradeCosts[i] = new Decimal(game.neUpgradeCosts[i]);
 
 function buyNEUpgrade(u) {
@@ -27,11 +27,11 @@ function buyNEUpgrade(u) {
 function getNEUpgradeEffect(u) {
 	switch(u) {
 		case 0:
-			return game.keys.add(1).log10().add(1).pow(2)
+			return game.keys.add(1).log10().add(1).pow(3)
 		case 1:
-			return Decimal.pow(1.05, game.totalFRBought.divide(10))
+			return Decimal.pow(1.1, game.totalFRBought.divide(10))
 		case 2:
-			return game.newEpisode.pow(0.5)
+			return game.newEpisode.pow(0.75)
 	}
 }
 

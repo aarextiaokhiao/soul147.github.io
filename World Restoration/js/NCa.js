@@ -1,5 +1,5 @@
 function gainedCakes() {
-	if(game.brake) return game.keys.divide(1e6).pow(1/3).multiply(game.cakeMultiplier2).floor().subtract(game.empoweredCakes).max(0);
+	if(game.brake) return game.keys.divide(1e6).pow(2/3).multiply(game.cakeMultiplier2).floor().subtract(game.empoweredCakes).max(0);
 	return game.keys.divide(1e6).pow(2/3.5).multiply(game.cakeMultiplier).floor();
 }
 

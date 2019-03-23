@@ -1,5 +1,5 @@
 function gainedKeys() {
-	return game.forks.divide(1e3).multiply(getKeyMultiplier());
+	return game.forks.divide(1e3).pow(2/2.75).multiply(getKeyMultiplier());
 }
 
 function getKeyMultiplier() {

@@ -1,5 +1,5 @@
 ﻿var FormatList = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'UDc', 'DDc', 'TDc', 'QaDc', 'QtDc', 'SxDc', 'SpDc', 'ODc', 'NDc', 'Vg', 'UVg', 'DVg', 'TVg', 'QaVg', 'QtVg', 'SxVg', 'SpVg', 'OVg', 'NVg', 'Tg', 'UTg', 'DTg', 'TTg', 'QaTg', 'QtTg', 'SxTg', 'SpTg', 'OTg', 'NTg', 'Qd', 'UQd', 'DQd', 'TQd', 'QaQd', 'QtQd', 'SxQd', 'SpQd', 'OQd', 'NQd', 'Qi', 'UQi', 'DQi', 'TQi', 'QaQi', 'QtQi', 'SxQi', 'SpQi', 'OQi', 'NQi', 'Se', 'USe', 'DSe', 'TSe', 'QaSe', 'QtSe', 'SxSe', 'SpSe', 'OSe', 'NSe', 'St', 'USt', 'DSt', 'TSt', 'QaSt', 'QtSt', 'SxSt', 'SpSt', 'OSt', 'NSt', 'Og', 'UOg', 'DOg', 'TOg', 'QaOg', 'QtOg', 'SxOg', 'SpOg', 'OOg', 'NOg', 'Nn', 'UNn', 'DNn', 'TNn', 'QaNn', 'QtNn', 'SxNn', 'SpNn', 'ONn', 'NNn', 'Ce',];
-var LongFormatList = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion'];
+var LongFormatList = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion'];
 
 function letter(power,str) {
     const len = str.length;
@@ -273,7 +273,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
 		}
 	}
 	if (notation === "Game percentages") {
-		return (Math.log10(Decimal.log10(value))/Math.log10(3.5e8)*100).toFixed(4)+'%'
+		return (Decimal.log10(value)/ENDGAME *100).toFixed(4)+'%' // Decimal.log10(Decimal.log10(value))/Math.log10(ENDGAME) USE THIS LATER FOR REALLY LARGE ENDGAME VALUES
 	}
 	if (notation === "Engineering" || notation === "Mixed engineering") pow = power - (power % 3)
 	else pow = power
@@ -284,7 +284,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
 	}
 
 	if (notation === "Logarithm") {
-		var base=game.options.logarithm.base
+		var base=game.options.logarithmBase || 10
 		var prefix
 		if (base==10) {
 			power=Decimal.log10(value)

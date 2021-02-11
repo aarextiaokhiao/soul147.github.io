@@ -152,4 +152,6 @@ body, button {
 	cursor: pointer
 }
 
+td {
+	padding-right: 50px;
 }

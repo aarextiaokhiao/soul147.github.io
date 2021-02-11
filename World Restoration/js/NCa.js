@@ -1,10 +1,14 @@
 function gainedCakes() {
-	if(game.brake) return game.keys.divide(1e6).pow(2/3).multiply(game.cakeMultiplier2).floor().subtract(game.empoweredCakes).max(0);
-	return game.keys.divide(1e6).pow(2/3.5).multiply(game.cakeMultiplier).floor();
+	if(game.brake) return game.keys.add(gainedKeys()).divide(1e6).pow(1/2.5).multiply(game.cakeMultiplier2).floor().subtract(game.empoweredCakes).max(0);
+	return game.keys.add(gainedKeys()).divide(1e6).pow(1/2.5).multiply(game.cakeMultiplier).floor();
 }
 
 function getECReq() {
-	return game.empoweredCakes.multiply(game.cakeMultiplier2).pow(3).multiply(1e6); // god I hope that's it
+	return game.empoweredCakes.max(1).divide(game.cakeMultiplier2).pow(2.5).multiply(1e6); // god I hope that's it
+}
+
+function getCakeReduction() {
+	return Decimal.pow(1/0.825, game.cakeReductionUpgrades)
 }
 
 function newCakeAtStake(force) {
@@ -14,7 +18,7 @@ function newCakeAtStake(force) {
 	else game.cakes = game.cakes.add(gainedCakes());
 	game.brake = game.brakeNext;
 	game.brakeNext = false;
-	reset(2);
+	prestige(1);
 }
 
 function toggleBrakeAtFlake() {
@@ -25,7 +29,7 @@ function getEmpoweredCakeEffect() {
 	return game.empoweredCakes.multiply(1e6).pow(0.5).max(1)
 }
 
-game.ncaUpgradeCosts = {0: "5", 1: "50"}
+game.ncaUpgradeCosts = {0: "10", 1: "100"}
 for(i in game.ncaUpgradeCosts) game.ncaUpgradeCosts[i] = new Decimal(game.ncaUpgradeCosts[i]);
 
 function buyNCaUpgrade(u) {
@@ -41,20 +45,30 @@ function getNCaUpgradeEffect(u) {
 		case 0:
 			return game.cakes.add(1).log10().divide(Math.log10(15)).add(1).pow(6)
 		case 1:
-			return Decimal.pow(1.2, game.totalFRBought.divide(25))
+			return Decimal.pow(1.08, game.totalFRBought.divide(25))
 	}
 }
 
-function buyCakeMultiplier() {
-	if(game.cakes.lt(game.cakeMultiplierCost)) return;
+function buyCakeMultiplier(auto) {
+	if(game.cakes.lt(game.cakeMultiplierCost.multiply(1+!!auto*9))) return;
 	game.cakes = game.cakes.subtract(game.cakeMultiplierCost);
 	game.cakeMultiplier = game.cakeMultiplier.multiply(1.05);
-	game.cakeMultiplierCost = game.cakeMultiplierCost.multiply(1.1);
+	game.cakeMultiplierCost = game.cakeMultiplierCost.multiply(1.3);
+	return true;
 }
 
-function buyCakeMultiplier2() {
-	if(game.cakes.lt(game.cakeMultiplier2Cost)) return;
+function buyCakeMultiplier2(auto) {
+	if(game.cakes.lt(game.cakeMultiplier2Cost.multiply(1+!!auto*9))) return;
 	game.cakes = game.cakes.subtract(game.cakeMultiplier2Cost);
-	game.cakeMultiplier2 = game.cakeMultiplier2.multiply(1.1);
-	game.cakeMultiplier2Cost = game.cakeMultiplier2Cost.multiply(5);
+	game.cakeMultiplier2 = game.cakeMultiplier2.multiply(1.5);
+	game.cakeMultiplier2Cost = game.cakeMultiplier2Cost.multiply(25);
+	return true;
+}
+
+function buyCakeReduction(auto) {
+	if(game.cakes.lt(game.cakeReductionCost.multiply(1+!!auto*9))) return;
+	game.cakes = game.cakes.subtract(game.cakeReductionCost);
+	game.cakeReductionUpgrades = game.cakeReductionUpgrades.add(1)
+	game.cakeReductionCost = game.cakeReductionCost.multiply(1.75);
+	return true;
 }
